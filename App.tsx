@@ -1,17 +1,17 @@
 /* eslint-disable */
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
+  import AllExpenses from './screens/AllExpenses';
 
 
 function App(): JSX.Element {
  
   return (
     <SafeAreaView>
-
+      <AllExpenses/>
     </SafeAreaView>
   );
 }
