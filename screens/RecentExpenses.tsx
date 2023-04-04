@@ -1,13 +1,12 @@
 /* eslint-disable */
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
 
 
-function App(): JSX.Element {
+function RecentExpenses(): JSX.Element {
  
   return (
     <SafeAreaView>
@@ -35,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default RecentExpenses;
