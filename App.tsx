@@ -33,7 +33,13 @@ function App(): JSX.Element {
         <BottomTabs.Screen
           name="RecentExpenses"
           component={RecentExpenses}
-          
+          options={{
+            title: 'Recent Expenses',
+            tabBarLabel: 'Recent',
+            tabBarIcon: ({color, size}) => {
+              <Icon name={''} size={size} color={color}/>
+            }
+          }}
         />
         <BottomTabs.Screen
           name="AllExpenses"
