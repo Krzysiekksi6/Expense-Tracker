@@ -36,14 +36,15 @@ function App(): JSX.Element {
           options={{
             title: 'Recent Expenses',
             tabBarLabel: 'Recent',
-            tabBarIcon: ({color, size}) => {
-              <Icon name={''} size={size} color={color}/>
-            }
           }}
         />
         <BottomTabs.Screen
           name="AllExpenses"
           component={AllExpenses}
+          options={{
+            title: 'All Expenses',
+            tabBarLabel: 'All Expenses',
+          }}
           
         />
       </BottomTabs.Navigator>
