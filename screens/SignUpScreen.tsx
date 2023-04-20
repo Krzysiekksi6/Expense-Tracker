@@ -1,5 +1,6 @@
 /* eslint-disable */
-import {View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View, Text, Image, useWindowDimensions} from 'react-native';
 
 const SignUpScreen = () => {
     return (
