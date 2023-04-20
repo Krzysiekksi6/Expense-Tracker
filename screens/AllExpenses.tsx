@@ -1,10 +1,12 @@
 /* eslint-disable */
-import React from 'react';
+import React, {useContext} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
+import { ExpensesContext } from '../store/expenses-context';
 
 function AllExpenses(): JSX.Element {
-  return <ExpensesOutput expensesPeroid="Total"/>;
+  const expenseCtx = useContext(ExpensesContext);
+  return <ExpensesOutput expenses={expenseCtx.expenses} expensesPeroid="Total"/>;
 }
 
 

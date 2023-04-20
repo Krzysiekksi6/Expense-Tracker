@@ -14,3 +14,19 @@ export const GlobalStyles = {
     gray700: '#221c30',
   },
 };
+
+export const GlobalColors = {
+  colors: {
+    white50: '#eee',
+    white500: '#fff',
+    bottom: '#f0f0f0',
+    lightGray50: '#e9e3e3',
+    lightGray500: '#dad8d9',
+    gray: '#544e50',
+    red: '#fe335e',
+    gold: '#fdbf00',
+    blue: '#1da1f2',
+    error50: '#fcc4e4',
+    error500: '#9b095c',
+  },
+};

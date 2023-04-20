@@ -1,36 +1,103 @@
 /* eslint-disable */
-import React from 'react';
-import {
-  Text,
-  StyleSheet,
-} from 'react-native';
+import React, {useLayoutEffect, useContext} from 'react';
+import {View, StyleSheet} from 'react-native';
+import IconButton from '../UI/IconButton';
+import {GlobalStyles} from '../constans/styles';
+import {GlobalColors} from '../constans/styles';
+import Button from '../UI/Button';
+import {ExpensesContext} from '../store/expenses-context';
 
+function ManageExpenses({route, navigation}): JSX.Element {
+  const expensesCtx = useContext(ExpensesContext);
+  const editedExpenseId = route.params?.expenseId;
+  const isEditing = !!editedExpenseId;
 
-function ManageExpenses(): JSX.Element {
- 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? 'Edit Expense' : 'Add Expense',
+      headerStyle: {backgroundColor: GlobalColors.colors.white500},
+      headerTintColor: 'black',
+    });
+  }, [navigation, isEditing]);
+
+  const cancelHandler = () => {
+    navigation.goBack();
+  };
+  const deleteExpenseHandler = () => {
+    expensesCtx.deleteExpense(editedExpenseId);
+    navigation.goBack();
+  };
+  const confirmHandler = () => {
+    if (isEditing) {
+      expensesCtx.updateExpense(editedExpenseId, {
+        description: 'Test!!!',
+        amount: 7.99,
+        date: new Date('2022-06-06'),
+      });
+    } else {
+      expensesCtx.addExpense({
+        description: 'Test',
+        amount: 7.99,
+        date: new Date('2022-05-05'),
+      });
+    }
+    navigation.goBack();
+  };
+
   return (
-    <Text>
-        ManageExpenses Screen
-    </Text>
+    <View style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <Button style={styles.button} mode={'flat'} onPress={cancelHandler}>
+          Cancel
+        </Button>
+        <Button style={styles.button} onPress={confirmHandler} mode={null}>
+          {isEditing ? 'Update' : 'Add'}
+        </Button>
+      </View>
+      {isEditing && (
+        <View style={styles.deleteContainer}>
+          <Button
+            style={styles.deleteButton}
+            mode={'error'}
+            onPress={deleteExpenseHandler}>
+            Delete
+          </Button>
+          {/* <IconButton
+            icon={'delete'}
+            color={GlobalStyles.colors.error500}
+            onPress={deleteExpenseHandler}
+          /> */}
+        </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: GlobalColors.colors.white50,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  button: {
+    minWidth: 120,
+    marginHorizontal: 8,
   },
-  highlight: {
-    fontWeight: '700',
+  deleteButton: {
+    minWidth: 120,
+    marginTop: 16,
+  },
+  deleteContainer: {
+    // alignItems: 'center',
+    // marginTop: 16,
+    // paddingTop: 8,
+    // borderWidth: 2,
+    // borderTopColor: GlobalStyles.colors.primary200,
   },
 });
 

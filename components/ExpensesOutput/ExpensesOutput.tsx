@@ -4,58 +4,50 @@ import PropTypes from 'prop-types';
 import {View, StyleSheet, Text, FlatList} from 'react-native';
 import ExpensesSummary from './ExpensesSummary';
 import ExpensesList from './ExpensesList';
+import {GlobalColors} from '../../constans/styles';
 
-const EXPNESES = [
-  {
-    id: 'e1',
-    descriptions: 'Avocado',
-    amount: 3.99,
-    date: new Date('2023-03-12'),
-  },
-
-  {
-    id: 'e2',
-    descriptions: 'T-shirt',
-    amount: 16.99,
-    date: new Date('2023-02-11'),
-  },
-
-  {
-    id: 'e3',
-    descriptions: 'Some bananas',
-    amount: 24.99,
-    date: new Date('2023-01-01'),
-  },
-
-  {
-    id: 'e4',
-    descriptions: 'Programing in Java Book',
-    amount: 71.69,
-    date: new Date('2022-12-12'),
-  },
-
-  {
-    id: 'e5',
-    descriptions: 'Audi A8',
-    amount: 60000,
-    date: new Date('2021-09-27'),
-  },
-];
-
-function ExpensesOutput({expensesPeroid}): JSX.Element {
- 
+function ExpensesOutput({expenses, expensesPeroid}): JSX.Element {
+  let content = (
+    <View style={styles.infoContainer}>
+      <Text style={styles.infoText}>{'No Expenses Registered...'}</Text>
+    </View>
+  );
+  if (expenses.length > 0) {
+    content = <ExpensesList expenses={expenses} />;
+  }
   return (
-    <View>
-      <ExpensesSummary expenses={EXPNESES} peroidName={expensesPeroid} />
-      <ExpensesList expenses={EXPNESES}/>
+    <View style={styles.container}>
+      <ExpensesSummary expenses={expenses} peroidName={expensesPeroid} />
+      {content}
     </View>
   );
 }
 
+export default ExpensesOutput;
+
 const styles = StyleSheet.create({
-  highlight: {
-    fontWeight: '700',
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
+    backgroundColor: GlobalColors.colors.white50,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+    padding: 12,
+    borderRadius: 6,
+    elevation: 3,
+    shadowColor: GlobalColors.colors.lightGray500,
+    shadowRadius: 4,
+    backgroundColor: GlobalColors.colors.lightGray500
+  },
+  infoText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: GlobalColors.colors.red,
   },
 });
-
-export default ExpensesOutput;
