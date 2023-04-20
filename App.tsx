@@ -16,7 +16,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import ExpensesContextProvider from './store/expenses-context';
 
 function App(): JSX.Element {
-  const [isAuth, setIsAuth] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
   const Stack = createStackNavigator();
   const BottomTabs = createBottomTabNavigator();
   const isDarkMode = useColorScheme() === 'dark';
