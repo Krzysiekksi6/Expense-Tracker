@@ -3,7 +3,7 @@ import React from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import {GlobalColors} from '../../constans/styles';
 
-const CustomInput = ({value, setValue, placeholder, secureTextEntry}) => {
+const CustomInput = ({value, setValue, placeholder, secureTextEntry=false}) => {
   return (
     <View style={styles.container}>
       <TextInput

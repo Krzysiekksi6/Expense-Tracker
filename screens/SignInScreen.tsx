@@ -2,25 +2,40 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, Image, useWindowDimensions} from 'react-native';
 import CustomInput from '../UI/AuthInput/CustomInput';
-import Logo from '../assets/images/dollar.png';
+import Logo from '../assets/images/dollar-1-svgrepo-com.png';
 import CustomButton from '../UI/AuthButton/CustomButton';
 // import Button from '../UI/Button';
 
-const SignInScreen = () => {
+const SignInScreen = ({navigation, route}) => {
   const {height} = useWindowDimensions();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setUserToken } = route.params;
 
-  const onSignInPressed = () => {};
-  const onSignUpPressed = () => {};
-  const onForgotPasswordPressed = () => {};
+  const navigateToSignUp = ():void => {
+    navigation.navigate('Signup');
+  };
+  const onSignInPressed = ():void => {
+    setUserToken('token');
+    // navigation.navigate('RecentExpenses')
+  };
+  const onSignUpPressed = ():void => {
+    navigateToSignUp();
+  };
+  const onForgotPasswordPressed = ():void => {
+    navigateToSignUp();
+  };
   return (
     <View style={styles.container}>
       <Image
         source={Logo}
-        style={[styles.logo, {height: height * 0.25}]}
+        style={[styles.logo, {height: height * 0.08}]}
         resizeMode="contain"
       />
+      <Text style={styles.title}>Expense Tracker</Text>
+      <View style={styles.label}>
+        <Text style={styles.labelText}>Sign In</Text>
+      </View>
       <CustomInput
         placeholder={'Username'}
         value={username}
@@ -55,11 +70,7 @@ const SignInScreen = () => {
           width="40%"
         />
 
-        <CustomButton
-          text={'Sign Up'}
-          onPress={onSignUpPressed}
-          width="40%"
-        />
+        <CustomButton text={'Sign Up'} onPress={onSignUpPressed} width="40%" />
       </View>
       <Text style={styles.rights}>All rights reserved &copy;</Text>
     </View>
@@ -77,6 +88,20 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     height: 60,
   },
+  title: {
+    marginVertical: 10,
+    fontWeight: 'bold',
+    fontSize: 26,
+  },
+  label: {
+    width: '100%',
+    marginVertical: 10,
+  },
+  labelText: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginLeft: 5,
+  },
   infoText: {
     marginVertical: 10,
   },
@@ -88,7 +113,7 @@ const styles = StyleSheet.create({
   },
   rights: {
     marginTop: 20,
-  }
+  },
 });
 
 export default SignInScreen;
