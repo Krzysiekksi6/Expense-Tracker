@@ -1,8 +1,14 @@
 /* eslint-disable */
-
+import React from 'react';
+import type {PropsWithChildren} from 'react';
 import {View, Pressable, Text, StyleSheet} from 'react-native';
 import {GlobalColors} from '../constans/styles';
-const Button = ({children, onPress, mode, style}) => {
+type ButtonProps = PropsWithChildren<{
+  onPress?: any;
+  mode?: string | string[];
+  style?: any;
+}>;
+const Button = ({children, onPress, mode, style}: ButtonProps) => {
   return (
     <View style={style}>
       <Pressable
@@ -13,11 +19,10 @@ const Button = ({children, onPress, mode, style}) => {
             styles.button,
             mode === 'flat' && styles.flat,
             mode === 'error' && styles.error,
-            mode === 'fb' && styles.facebookButton, 
-            mode === 'tw' && styles.twitterButton
+            mode === 'fb' && styles.facebookButton,
+            mode === 'tw' && styles.twitterButton,
           ]}>
-          <Text style={[styles.buttonText, 
-          mode === 'flat' && styles.flatText]}>
+          <Text style={[styles.buttonText, mode === 'flat' && styles.flatText]}>
             {children}
           </Text>
         </View>

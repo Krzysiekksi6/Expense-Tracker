@@ -3,14 +3,22 @@ import React from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import {GlobalColors} from '../../constans/styles';
 
-const CustomInput = ({value, setValue, placeholder, secureTextEntry=false}) => {
+const CustomInput = ({
+  value,
+  onUpdateValue,
+  placeholder,
+  secureTextEntry = false,
+  keyboardType = 'default',
+  isInvalid,
+}) => {
   return (
     <View style={styles.container}>
       <TextInput
+        style={[styles.input, isInvalid && styles.inputInvalid]}
         value={value}
-        onChangeText={setValue}
+        keyboardType={keyboardType}
+        onChangeText={onUpdateValue}
         placeholder={placeholder}
-        style={styles.input}
         secureTextEntry={secureTextEntry}
       />
     </View>
@@ -25,9 +33,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     paddingHorizontal: 10,
-    marginVertical: 5,
+    marginVertical: 4,
   },
   input: {},
+  inputInvalid: {},
 });
 
 export default CustomInput;

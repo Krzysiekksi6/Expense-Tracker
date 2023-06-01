@@ -1,15 +1,25 @@
 /* eslint-disable */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {View, StyleSheet, Text, FlatList} from 'react-native';
 import ExpensesSummary from './ExpensesSummary';
 import ExpensesList from './ExpensesList';
 import {GlobalColors} from '../../constans/styles';
+import {Expense} from '../../constans/Expense';
 
-function ExpensesOutput({expenses, expensesPeroid}): JSX.Element {
+interface ExpensesOutputProps {
+  expenses: Expense[];
+  expensesPeroid: string;
+  fallbackText?: string;
+}
+
+function ExpensesOutput({
+  expenses,
+  expensesPeroid,
+  fallbackText,
+}: ExpensesOutputProps): JSX.Element {
   let content = (
     <View style={styles.infoContainer}>
-      <Text style={styles.infoText}>{'No Expenses Registered...'}</Text>
+      <Text style={styles.infoText}>{fallbackText}</Text>
     </View>
   );
   if (expenses.length > 0) {
@@ -43,7 +53,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     shadowColor: GlobalColors.colors.lightGray500,
     shadowRadius: 4,
-    backgroundColor: GlobalColors.colors.lightGray500
+    backgroundColor: GlobalColors.colors.lightGray500,
   },
   infoText: {
     fontSize: 16,
