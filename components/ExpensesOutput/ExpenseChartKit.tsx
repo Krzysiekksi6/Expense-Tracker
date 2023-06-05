@@ -5,6 +5,7 @@ import {LineChart, BarChart} from 'react-native-chart-kit';
 
 const ExpenseChartKit = ({expenses}) => {
   console.log(expenses);
+
   function createChartData(expenses) {
     const months = [
       'January',
@@ -21,11 +22,23 @@ const ExpenseChartKit = ({expenses}) => {
       'December',
     ];
 
+    const currentMonth = new Date().getMonth();
+    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const previousPreviousMonth = previousMonth === 0 ? 11 : previousMonth - 1;
+    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    const nextNextMonth = nextMonth === 11 ? 0 : nextMonth + 1;
+
     const chartData = {
-      labels: months.map(month => month.slice(0, 3)),
+      labels: [
+        months[previousPreviousMonth].slice(0, 3),
+        months[previousMonth].slice(0, 3),
+        months[currentMonth].slice(0, 3),
+        months[nextMonth].slice(0, 3),
+        months[nextNextMonth].slice(0, 3),
+      ],
       datasets: [
         {
-          data: new Array(12).fill(0),
+          data: [0, 0, 0, 0, 0],
         },
       ],
     };
@@ -33,7 +46,16 @@ const ExpenseChartKit = ({expenses}) => {
     expenses.forEach(expense => {
       const date = new Date(expense.date);
       const month = date.getMonth();
-      chartData.datasets[0].data[month] += expense.amount;
+      if (
+        month === previousPreviousMonth ||
+        month === previousMonth ||
+        month === currentMonth ||
+        month === nextMonth ||
+        month === nextNextMonth
+      ) {
+        chartData.datasets[0].data[month - previousPreviousMonth] +=
+          expense.amount;
+      }
     });
 
     return chartData;
@@ -78,6 +100,7 @@ export default ExpenseChartKit;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -143,7 +143,6 @@ function App(): JSX.Element {
         const storedToken = await AsyncStorage.getItem('token');
 
         if (storedToken) {
-          console.log('AUTH', storedToken);
           authCtx.authenticate(storedToken);
         }
         setIsLoading(false);
@@ -157,9 +156,6 @@ function App(): JSX.Element {
       return <LoadingOverlay />;
     }
 
-    if (authCtx.isAuthenticated === null) {
-      return null; // Możesz również zwrócić spinner lub inny komponent ładowania
-    }
     return (
       <NavigationContainer>
         {!authCtx.isAuthenticated ? <AuthStack /> : <AuthenticatedStack />}
