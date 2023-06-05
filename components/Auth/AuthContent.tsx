@@ -1,14 +1,6 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  useWindowDimensions,
-  Alert,
-} from 'react-native';
+import React from 'react';
+import {StyleSheet, View, Text, Image, useWindowDimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import CustomInput from '../../UI/AuthInput/CustomInput';
 import Logo from '../../assets/images/dollar-1-svgrepo-com.png';
 import CustomButton from '../../UI/AuthButton/CustomButton';
 import AuthForm from './AuthForm';
@@ -25,11 +17,10 @@ const REGISTER_TEXT = {
   labelText: 'Register',
   buttonText: 'Sign up',
 };
+
 const AuthContent = ({isLogin, onAuthenticate}: AuthContentProps) => {
   const navigation = useNavigation();
   const {height} = useWindowDimensions();
-  //   const {setUserToken} = route.params;
-
   const navigateTo = (): void => {
     if (isLogin) {
       navigation.navigate('Signup');
@@ -50,38 +41,9 @@ const AuthContent = ({isLogin, onAuthenticate}: AuthContentProps) => {
   function onForgotPasswordHandler() {
     navigateTo();
   }
-  const [credentialsInvalid, setCredentialsInvalid] = useState({
-    email: false,
-    password: false,
-    confirmEmail: false,
-    confirmPassword: false,
-  });
 
-  const submitHandler = credentials => {
-    let {email, confirmEmail, password, confirmPassword} = credentials;
-
-    email = email.trim();
-    password = password.trim();
-
-    const emailIsValid = email.includes('@');
-    const passwordIsValid = password.length > 6;
-    const emailsAreEqual = email === confirmEmail;
-    const passwordsAreEqual = password === confirmPassword;
-
-    if (
-      !emailIsValid ||
-      !passwordIsValid ||
-      (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
-    ) {
-      Alert.alert('Invalid input', 'Please check your entered credentials.');
-      setCredentialsInvalid({
-        email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
-        password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
-      });
-      return;
-    }
+  const submitHandler = (email, password) => {
+    console.log(email, password);
     onAuthenticate(email, password);
   };
 
@@ -103,11 +65,7 @@ const AuthContent = ({isLogin, onAuthenticate}: AuthContentProps) => {
       <View style={styles.label}>
         <Text style={styles.labelText}>{currentText.labelText}</Text>
       </View>
-      <AuthForm
-        isLogin={isLogin}
-        onSubmit={submitHandler}
-        credentialsInvalid={credentialsInvalid}
-      />
+      <AuthForm isLogin={isLogin} onSubmitForm={submitHandler} />
       {isLogin ? (
         <>
           <Text style={styles.infoText}>

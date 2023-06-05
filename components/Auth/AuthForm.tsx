@@ -1,84 +1,93 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
 import CustomInput from '../../UI/AuthInput/CustomInput';
 import CustomButton from '../../UI/AuthButton/CustomButton';
-const AuthForm = ({isLogin, onSubmit, credentialsInvalid}) => {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
+import {GlobalColors} from '../../constans/styles';
+const AuthForm = ({isLogin, onSubmitForm}) => {
+  /**
+   * React Hook form
+   */
+  type FormData = {
+    email: string;
+    password: string;
+    confirmEmail: string;
+    confirmPassword: string;
+  };
+
   const {
-    email: emailIsInvalid,
-    confirmEmail: emailsDontMatch,
-    password: passwordIsInvalid,
-    confirmPassword: passwordsDontMatch,
-  } = credentialsInvalid;
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<FormData>({
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmEmail: '',
+      confirmPassword: '',
+    },
+  });
 
-  function updateInputValueHandler(inputType, enteredValue) {
-    switch (inputType) {
-      case 'email':
-        setEnteredEmail(enteredValue);
-        break;
-      case 'confirmEmail':
-        setEnteredConfirmEmail(enteredValue);
-        break;
-      case 'password':
-        setEnteredPassword(enteredValue);
-        break;
-      case 'confirmPassword':
-        setEnteredConfirmPassword(enteredValue);
-        break;
-    }
-  }
+  const onSubmit = (data): void => {
+    const {email, confirmEmail, password, confirmPassword} = data;
+    console.log(email, confirmEmail, password, confirmPassword);
+    onSubmitForm(email, password);
+  };
 
-  function submitHandler() {
-    onSubmit({
-      email: enteredEmail,
-      confirmEmail: enteredConfirmEmail,
-      password: enteredPassword,
-      confirmPassword: enteredConfirmPassword,
-    });
-  }
+  console.log('errors', errors);
+
+  /**
+   * ------------
+   */
 
   return (
     <View style={styles.form}>
-      <CustomInput
-        placeholder={'email@example.com'}
-        value={enteredEmail}
-        onUpdateValue={updateInputValueHandler.bind(this, 'email')}
-        keyboardType="email-address"
-        isInvalid={emailIsInvalid}
-        secureTextEntry={false}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+          validate: {
+            minLength: v => v.length >= 5,
+          },
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <CustomInput
+            placeholder={'email@example.com'}
+            onUpdateValue={value => onChange(value)}
+            keyboardType="email-address"
+            secureTextEntry={false}
+            value={value}
+          />
+        )}
+        name="email"
       />
-      {!isLogin && (
-        <CustomInput
-          placeholder={'Confirm email@example.com'}
-          value={enteredConfirmEmail}
-          onUpdateValue={updateInputValueHandler.bind(this, 'confirmEmail')}
-          keyboardType="email-address"
-          isInvalid={emailsDontMatch}
-          secureTextEntry={false}
-        />
-      )}
-      <CustomInput
-        placeholder={'Password'}
-        onUpdateValue={updateInputValueHandler.bind(this, 'password')}
-        secureTextEntry={true}
-        value={enteredPassword}
-        isInvalid={passwordIsInvalid}
+      {errors.email && <Text style={styles.errorText}>This is required.</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+          validate: {
+            minLength: v => v.length >= 5,
+          },
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <CustomInput
+            placeholder={'Password'}
+            onUpdateValue={value => onChange(value)}
+            secureTextEntry={true}
+            value={value}
+          />
+        )}
+        name="password"
       />
-      {!isLogin && (
-        <CustomInput
-          placeholder={'Confirm Password'}
-          onUpdateValue={updateInputValueHandler.bind(this, 'confirmPassword')}
-          secureTextEntry={true}
-          value={enteredConfirmPassword}
-          isInvalid={passwordsDontMatch}
-        />
+      {errors.password && (
+        <Text style={styles.errorText}>This is required.</Text>
       )}
+
       <CustomButton
         text={isLogin ? 'Log In' : 'Sign Up'}
-        onPress={submitHandler}
+        onPress={handleSubmit(onSubmit)}
       />
     </View>
   );
@@ -92,5 +101,8 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 12,
+  },
+  errorText: {
+    color: GlobalColors.colors.error500,
   },
 });

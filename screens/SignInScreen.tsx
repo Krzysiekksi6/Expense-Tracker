@@ -6,8 +6,10 @@ import {AuthContext} from '../store/auth-context';
 import AuthContent from '../components/Auth/AuthContent';
 
 const SignInScreen = () => {
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const authContext = useContext(AuthContext);
   async function loginHandler(email, password) {
+    setIsAuthenticating(true);
     try {
       const responseToken = await login(email, password);
       authContext.authenticate(responseToken);
@@ -16,9 +18,14 @@ const SignInScreen = () => {
         'Authentication failed!',
         'Could not log you in. Please check your credentials or try again later!',
       );
+      console.log(error);
+      setIsAuthenticating(false);
     }
   }
 
+  if (isAuthenticating) {
+    return <LoadingOverlay />;
+  }
   return <AuthContent isLogin={true} onAuthenticate={loginHandler} />;
 };
 

@@ -1,12 +1,13 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, StatusBar, useColorScheme, View} from 'react-native';
+import {useColorScheme, View, StatusBar} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ManageExpenses from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
@@ -14,23 +15,18 @@ import {GlobalColors} from './constans/styles';
 import IconButton from './UI/IconButton';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
+import LoadingOverlay from './UI/LoadingOverlay';
 import ExpensesContextProvider from './store/expenses-context';
 import AuthContextProvider, {AuthContext} from './store/auth-context';
-import Button from './UI/Button';
 
 function App(): JSX.Element {
   const Stack = createStackNavigator();
   const BottomTabs = createBottomTabNavigator();
   const isDarkMode = useColorScheme() === 'dark';
 
-  const authCtx = useContext(AuthContext);
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
 
   function ExpensesOverview() {
     const authCtx = useContext(AuthContext);
@@ -140,12 +136,37 @@ function App(): JSX.Element {
   }
   function Navigation() {
     const authCtx = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      async function fetchToken() {
+        const storedToken = await AsyncStorage.getItem('token');
+
+        if (storedToken) {
+          console.log('AUTH', storedToken);
+          authCtx.authenticate(storedToken);
+        }
+        setIsLoading(false);
+      }
+
+      fetchToken();
+      SplashScreen.hide();
+    }, []);
+
+    if (isLoading) {
+      return <LoadingOverlay />;
+    }
+
+    if (authCtx.isAuthenticated === null) {
+      return null; // Możesz również zwrócić spinner lub inny komponent ładowania
+    }
     return (
       <NavigationContainer>
         {!authCtx.isAuthenticated ? <AuthStack /> : <AuthenticatedStack />}
       </NavigationContainer>
     );
   }
+
   return (
     <>
       <StatusBar

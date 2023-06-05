@@ -1,36 +1,25 @@
 /* eslint-disable */
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
+import {View, Dimensions, StyleSheet} from 'react-native';
+import {LineChart} from 'react-native-chart-kit';
 
 const ExpenseChartKit = ({expenses}) => {
+  const chartData = {
+    labels: expenses.map(item => {
+      const date = new Date(item.date);
+      return date.toLocaleString('en-US', {month: 'short'});
+    }),
+    datasets: [
+      {
+        data: expenses.map(item => item.amount),
+      },
+    ],
+  };
   return (
-    <View>
-      <Text>Bezier Line Chart</Text>
+    <View style={styles.container}>
       <LineChart
-        data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width} // from react-native
+        data={chartData}
+        width={Dimensions.get('window').width * 0.9} // from react-native
         height={220}
         yAxisLabel="$"
         yAxisSuffix="k"
@@ -62,3 +51,9 @@ const ExpenseChartKit = ({expenses}) => {
 };
 
 export default ExpenseChartKit;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 4,
+  },
+});
