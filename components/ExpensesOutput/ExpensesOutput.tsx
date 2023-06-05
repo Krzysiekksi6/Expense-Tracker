@@ -5,6 +5,7 @@ import ExpensesSummary from './ExpensesSummary';
 import ExpensesList from './ExpensesList';
 import {GlobalColors} from '../../constans/styles';
 import {Expense} from '../../constans/Expense';
+import ExpenseChartKit from './ExpenseChartKit';
 
 interface ExpensesOutputProps {
   expenses: Expense[];
@@ -28,6 +29,7 @@ function ExpensesOutput({
   return (
     <View style={styles.container}>
       <ExpensesSummary expenses={expenses} peroidName={expensesPeroid} />
+      <ExpenseChartKit expenses={expenses} />
       {content}
     </View>
   );
