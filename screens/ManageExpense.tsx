@@ -51,6 +51,7 @@ function ManageExpenses({route, navigation}): JSX.Element {
     setIsSubmitting(true);
     try {
       if (isEditing) {
+        console.log('TOKEN', authCtx.token);
         expensesCtx.updateExpense(editedExpenseId, expenseData);
         await updateExpense(editedExpenseId, expenseData, authCtx.token);
       } else {
@@ -60,6 +61,7 @@ function ManageExpenses({route, navigation}): JSX.Element {
       navigation.goBack();
     } catch (error) {
       setError('Could not confirm expense!');
+      console.log(error);
       setIsSubmitting(false);
     }
   };

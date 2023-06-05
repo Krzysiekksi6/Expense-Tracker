@@ -20,7 +20,8 @@ export async function fetchExpenses(token): Promise<Expense[]> {
   return expenses;
 }
 // POST
-export async function storeExpense(expenseData: Expense, token: string) {
+export async function storeExpense(expenseData, token) {
+  console.log("POST TOKEN", token);
   const response = await axios.post(
     API_URL + `/expenses.json?auth=${token}`,
     expenseData,

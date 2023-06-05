@@ -4,8 +4,6 @@ import {View, Dimensions, StyleSheet} from 'react-native';
 import {LineChart, BarChart} from 'react-native-chart-kit';
 
 const ExpenseChartKit = ({expenses}) => {
-  console.log(expenses);
-
   function createChartData(expenses) {
     const months = [
       'January',
