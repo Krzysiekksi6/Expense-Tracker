@@ -1,0 +1,15 @@
+export enum KeyboardType {
+  Default = 'default',
+  EmailAddress = 'email-address',
+  Numeric = 'numeric',
+  PhonePad = 'phone-pad',
+  AsciiCapable = 'ascii-capable',
+  NumbersAndPunctuation = 'numbers-and-punctuation',
+  URL = 'url',
+  NumberPad = 'number-pad',
+  NamePhonePad = 'name-phone-pad',
+  DecimalPad = 'decimal-pad',
+  Twitter = 'twitter',
+  WebSearch = 'web-search',
+  VisiblePassword = 'visible-password',
+}
