@@ -1,28 +1,53 @@
 /* eslint-disable */
 import React from 'react';
 import {View, Dimensions, StyleSheet} from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
+import {LineChart, BarChart} from 'react-native-chart-kit';
 
 const ExpenseChartKit = ({expenses}) => {
-  const chartData = {
-    labels: expenses.map(item => {
-      const date = new Date(item.date);
-      return date.toLocaleString('en-US', {month: 'short'});
-    }),
-    datasets: [
-      {
-        data: expenses.map(item => item.amount),
-      },
-    ],
-  };
+  console.log(expenses);
+  function createChartData(expenses) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    const chartData = {
+      labels: months.map(month => month.slice(0, 3)),
+      datasets: [
+        {
+          data: new Array(12).fill(0),
+        },
+      ],
+    };
+
+    expenses.forEach(expense => {
+      const date = new Date(expense.date);
+      const month = date.getMonth();
+      chartData.datasets[0].data[month] += expense.amount;
+    });
+
+    return chartData;
+  }
+
+  const chartData = createChartData(expenses);
   return (
     <View style={styles.container}>
-      <LineChart
+      <BarChart
         data={chartData}
         width={Dimensions.get('window').width * 0.9} // from react-native
         height={220}
         yAxisLabel="$"
-        yAxisSuffix="k"
+        yAxisSuffix=""
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           backgroundColor: '#e26a00',
@@ -40,7 +65,6 @@ const ExpenseChartKit = ({expenses}) => {
             stroke: '#ffa726',
           },
         }}
-        bezier
         style={{
           marginVertical: 8,
           borderRadius: 16,
